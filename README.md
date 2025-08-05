@@ -9,6 +9,7 @@ You need these from simulator runtime: MTLSimDriver.framework, MTLSimImplementat
 ## Additional patches
 > [!NOTE]
 > - [x] means it is automated or handled by hooks
+> - [ ] means you need to patch it by hand
 
 ### macOS side
 #### dyld
@@ -28,21 +29,7 @@ You need these from simulator runtime: MTLSimDriver.framework, MTLSimImplementat
 - [ ] `-[MTLSimDevice newRenderPipelineStateWithTileDescriptor:options:reflection:error:], line 2124: error 'not supported in the simulator'`. FIXME: this is not implemented at all. However, it is only used by `QuartzCore'CA::OGL::BlurState::tile_downsample(int)` which can be skipped.
 
 #### WindowServer
-- [x] It hangs twice when calling `NXClickTime` and `NXGetClickSpace`. Workaround is to attach and run `thr ret` then `continue` twice.
-```
-  * frame #0: 0x00000001d87dbf14 libsystem_kernel.dylib`mach_msg2_trap + 8
-    frame #1: 0x00000001d87ee240 libsystem_kernel.dylib`mach_msg2_internal + 80
-    frame #2: 0x00000001d87e4b78 libsystem_kernel.dylib`mach_msg_overwrite + 604
-    frame #3: 0x00000001d87dc290 libsystem_kernel.dylib`mach_msg + 24
-    frame #4: 0x00000001db9a9d28 IOKit`io_hideventsystem_open + 216
-    frame #5: 0x00000001db9a941c IOKit`__IOHIDEventSystemClientRefresh + 700
-    frame #6: 0x00000001db9a8ef8 IOKit`IOHIDEventSystemClientCreateWithType + 880
-    frame #7: 0x00000001db9ce690 IOKit`IOHIDCopyHIDParameterFromEventSystem + 64
-    frame #8: 0x00000001db9a7e74 IOKit`IOHIDCopyCFTypeParameter + 76
-    frame #9: 0x00000001db9a7d34 IOKit`IOHIDGetParameter + 68
-    frame #10: 0x00000001db9a7cc0 IOKit`NXClickTime + 44
-    frame #11: 0x00000001dd39d978 SkyLight`CGSMouseStateCreate + 52
-```
+- [x] It hangs twice when calling `NXClickTime` and `NXGetClickSpace`. Hooked to do nothing instead since both were deprecated.
 
 ### iOS side
 #### MTLCompilerService
