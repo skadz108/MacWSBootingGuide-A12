@@ -1,0 +1,16 @@
+set -e
+cd $(realpath $HOME/../..)/usr/macOS
+
+add_trustcache() {
+    local path="$1"
+    local cdhash
+    cdhash=$(ldid -arch arm64 -h "$path" 2>/dev/null | grep CDHash= | cut -c8-)
+    echo "Adding $path cdhash: $cdhash"
+    jbctl trustcache add "$cdhash"
+}
+
+add_trustcache "bin/TestMetalIOSurface"
+add_trustcache "lib/libmachook.dylib"
+add_trustcache "Frameworks/MetalSerializer.framework/MetalSerializer"
+add_trustcache "Frameworks/MTLSimDriver.framework/MTLSimDriver"
+add_trustcache "Frameworks/MTLSimImplementation.framework/MTLSimImplementation"
