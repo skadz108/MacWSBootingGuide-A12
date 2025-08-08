@@ -14,6 +14,7 @@ extern au_asid_t audit_token_to_asid(audit_token_t atoken);
 extern uid_t audit_token_to_auid(audit_token_t atoken);
 
 //#define FORCE_SW_RENDER 1
+BOOL hooked_return_1(void) { return YES; }
 void EnableJIT(void);
 void ModifyExecutableRegion(void *addr, size_t size, void(^callback)(void));
 
@@ -44,6 +45,10 @@ void loadImageCallback(const struct mach_header* header, intptr_t vmaddr_slide) 
             assert(*check == 0xb4000588); // cbz    x8, do_abort
             *check = 0xd503201f; // nop
         });
+        
+        // grant all permissions
+        MSHookFunction(MSFindSymbol((MSImageRef)header, "_audit_token_check_tcc_access"), hooked_return_1, NULL);
+            
         
 #if FORCE_SW_RENDER
         // skip Metal check (WSSystemCanCompositeWithMetal::once)
