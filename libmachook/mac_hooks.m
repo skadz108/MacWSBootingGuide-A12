@@ -234,7 +234,9 @@ DYLD_INTERPOSE(audit_token_to_asid_new, audit_token_to_asid);
 DYLD_INTERPOSE(audit_token_to_auid_new, audit_token_to_auid);
 DYLD_INTERPOSE(auditon_new, auditon);
 DYLD_INTERPOSE(getaudit_addr_new, getaudit_addr);
+#if FORCE_SW_RENDER
 DYLD_INTERPOSE(IOSurfaceCreate_new, IOSurfaceCreate);
+#endif
 
 // IOKit
 CFMutableDictionaryRef IOServiceNameMatching_new(const char *name) {

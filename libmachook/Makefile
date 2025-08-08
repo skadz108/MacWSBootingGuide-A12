@@ -3,7 +3,7 @@ include $(THEOS)/makefiles/common.mk
 
 LIBRARY_NAME = libmachook
 
-libmachook_FILES = jit.m mac_hooks.m metal_hooks.x os_variant_hooks.x quartzcore_hooks.x
+libmachook_FILES = jit.m objc_hooks.c mac_hooks.m metal_hooks.x os_variant_hooks.x quartzcore_hooks.x
 #libmachook_CFLAGS = -D_FORCE_M1_DRIVER -fobjc-arc
 libmachook_FRAMEWORKS = IOKit IOSurface Metal
 libmachook_LDFLAGS = -undefined dynamic_lookup

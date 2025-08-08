@@ -5,6 +5,7 @@ You need these from simulator runtime: MTLSimDriver.framework, MTLSimImplementat
 
 ## Setting up
 - TODO
+- Copy `/System/Volumes/Data/System/Library/CoreServices/CoreTypes.bundle/Contents/Library`
 
 ## Additional patches
 > [!NOTE]
@@ -20,6 +21,9 @@ You need these from simulator runtime: MTLSimDriver.framework, MTLSimImplementat
 - [x] Missing syscalls: `audit_token_to_asid`, `audit_token_to_auid`, `auditon`, `getaudit_addr`
 - [ ] This daemon needs to be converted to a dylib using [LiveContainer's method](https://github.com/LiveContainer/LiveContainer/blob/341cc87d40d8eec690d21dc71bd69d74667588da/LiveContainer/LCMachOUtils.m#L71-L88)
 
+#### loginwindowLite
+- [ ] `Error (non-fatal) enumerating <private>: Error Domain=NSCocoaErrorDomain Code=256 "The file “Library” couldn’t be opened." UserInfo={NSURL=Library/ -- file:///System/Library/CoreServices/CoreTypes.bundle/Contents/, NSFilePath=/System/Library/CoreServices/CoreTypes.bundle/Contents/Library, NSUnderlyingError=0x13d5a73b0 {Error Domain=NSPOSIXErrorDomain Code=20 "Not a directory"}}`: because `/System/Volumes/Data/System/Library/CoreServices/CoreTypes.bundle/Contents/Library` might be missing.
+
 #### MTLSimDriver
 - [x] `failed assertion _limits.maxColorAttachments > 0 at line 3791 in -[_MTLDevice initLimits]`, can be bypassed using `CFPreferencesSetAppValue(@"EnableSimApple5", @1, @"com.apple.Metal")`
 - [x] `-[MTLTextureDescriptorInternal validateWithDevice:], line 1344: error 'Texture Descriptor Validation invalid storageMode (1). Must be one of MTLStorageModeShared(0) MTLStorageModeMemoryless(3) MTLStorageModePrivate(2)`: because macOS defaults to `MTLStorageModeManaged`, while iOS always has unified memory so it doesn't allow that.
@@ -31,6 +35,7 @@ You need these from simulator runtime: MTLSimDriver.framework, MTLSimImplementat
 
 #### WindowServer
 - [x] It hangs twice when calling `NXClickTime` and `NXGetClickSpace`. Hooked to do nothing instead since both were deprecated.
+- [ ] Missing light theme when using macOS recovery. Can be fixed by copying `/System/Library/CoreServices/SystemAppearance.bundle/Contents/Resources` from full macOS installation.
 
 ### iOS side
 #### MTLCompilerService
